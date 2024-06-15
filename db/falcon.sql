@@ -1,7 +1,7 @@
 CREATE SCHEMA `flcn`;
 
 CREATE TABLE `flcn`.`appuser` (
-  `id` int,
+  `id` varchar(10) PRIMARY KEY,
   `name` varchar(50),
   `mobile` varchar(15),
   `email` varchar(50),
@@ -15,7 +15,7 @@ CREATE TABLE `flcn`.`appuser` (
 );
 
 CREATE TABLE `flcn`.`client` (
-  `id` int PRIMARY KEY,
+  `id` varchar(20) PRIMARY KEY,
   `name` varchar(30),
   `mobile` varchar(15),
   `email` varchar(50),
@@ -26,11 +26,23 @@ CREATE TABLE `flcn`.`client` (
   `job` varchar(100),
   `remarks` varchar(100),
   `created_by` varchar(10),
-  `created at` timestamp
+  `created_at` timestamp DEFAULT (now())
+);
+
+CREATE TABLE `flcn`.`product_bill` (
+  `id` varchar(20) PRIMARY KEY,
+  `name` varchar(30),
+  `HSN` varchar(8),
+  `cgst` varchar(10),
+  `sgst` varchar(10),
+  `remarks` varchar(100),
+  `status` bool,
+  `created_by` varchar(10),
+  `created_at` timestamp DEFAULT (now())
 );
 
 CREATE TABLE `flcn`.`item` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(30),
   `accessary` varchar(200),
   `complain` varchar(200),
@@ -38,14 +50,15 @@ CREATE TABLE `flcn`.`item` (
   `remarks` varchar(100),
   `status` bool,
   `created_by` varchar(10),
-  `created at` timestamp
+  `created_at` timestamp DEFAULT (now())
 );
 
 CREATE TABLE `flcn`.`job` (
-  `id` int PRIMARY KEY,
+  `id` varchar(20) PRIMARY KEY,
   `clid` varchar(20),
   `status` varchar(10),
-  `assigned` varchar(20)
+  `echarge` float,
+  `assigned` varchar(10)
 );
 
 CREATE TABLE `flcn`.`job_comment` (
@@ -58,9 +71,9 @@ CREATE TABLE `flcn`.`job_comment` (
 );
 
 CREATE TABLE `flcn`.`job_item` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `jobid` varchar(20),
-  `item` varchar(20),
+  `item` int,
   `make` varchar(20),
   `model` varchar(30),
   `snno` varchar(30),
@@ -68,7 +81,6 @@ CREATE TABLE `flcn`.`job_item` (
   `accessary` varchar(200),
   `complain` varchar(200),
   `rest` float,
-  `icharge` float,
   `remarks` varchar(100)
 );
 
@@ -79,7 +91,7 @@ CREATE TABLE `flcn`.`secuence` (
   `sno` varchar(20),
   `remarks` varchar(40),
   `status` bool,
-  `created at` timestamp
+  `created_at` timestamp DEFAULT (now())
 );
 
 CREATE TABLE `flcn`.`appinfo` (
@@ -95,14 +107,14 @@ CREATE TABLE `flcn`.`invoice_gst_goods_main` (
   `invoice_no` varchar(30),
   `refjob` varchar(20),
   `to` varchar(20),
-  `gst` varbinary,
+  `gst` varchar(20),
   `inovice_date` date,
   `gross_amount` float,
   `cgst_amount` float,
   `ssgst_amount` float,
   `total_amount` float,
   `remarks` varchar(100),
-  `created_at` timestamp,
+  `created_at` timestamp DEFAULT (now()),
   `created_by` varchar(10),
   `paid` bool
 );
@@ -110,7 +122,7 @@ CREATE TABLE `flcn`.`invoice_gst_goods_main` (
 CREATE TABLE `flcn`.`invoice_gst_goods_history` (
   `id` int,
   `entry_id` int,
-  `created at` timestamp,
+  `created_at` timestamp DEFAULT (now()),
   `product` varchar(255),
   `qty` float,
   `HSN` varchar(8),
@@ -127,14 +139,14 @@ CREATE TABLE `flcn`.`invoice_gst_srv_main` (
   `invoice_no` varchar(30),
   `refjob` varchar(20),
   `to` varchar(20),
-  `gst` varbinary,
+  `gst` varchar(20),
   `inovice_date` date,
   `gross_amount` float,
   `cgst_amount` float,
   `ssgst_amount` float,
   `total_amount` float,
   `remarks` varchar(100),
-  `created_at` timestamp,
+  `created_at` timestamp DEFAULT (now()),
   `created_by` varchar(10),
   `paid` bool
 );
@@ -142,7 +154,7 @@ CREATE TABLE `flcn`.`invoice_gst_srv_main` (
 CREATE TABLE `flcn`.`invoice_gst_srv_history` (
   `id` int,
   `entry_id` int,
-  `created at` timestamp,
+  `created_at` timestamp DEFAULT (now()),
   `product` varchar(255),
   `qty` float,
   `HSN` varchar(8),
@@ -163,7 +175,7 @@ CREATE TABLE `flcn`.`invoice_kancha_main` (
   `gross_amount` float,
   `total_amount` float,
   `remarks` varchar(100),
-  `created_at` timestamp,
+  `created_at` timestamp DEFAULT (now()),
   `created_by` varchar(10),
   `paid` bool
 );
@@ -171,7 +183,7 @@ CREATE TABLE `flcn`.`invoice_kancha_main` (
 CREATE TABLE `flcn`.`invoice_kancha_history` (
   `id` int,
   `entry_id` int,
-  `created at` timestamp,
+  `created_at` timestamp DEFAULT (now()),
   `product` varchar(255),
   `qty` float,
   `total_ammount` float,
@@ -189,35 +201,63 @@ CREATE TABLE `flcn`.`leadger_sc` (
   `mode` varchar(10),
   `remarks` varchar(50),
   `refno` varchar(50),
-  `created at` timestamp
+  `created_at` timestamp DEFAULT (now())
 );
 
-ALTER TABLE `flcn`.`client` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`job` (`clid`);
-
-ALTER TABLE `flcn`.`job` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`job_item` (`jobid`);
-
-ALTER TABLE `flcn`.`item` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`job_item` (`item`);
-
-ALTER TABLE `flcn`.`job_comment` ADD FOREIGN KEY (`jbid`) REFERENCES `flcn`.`job` (`id`);
-
-ALTER TABLE `flcn`.`job_comment` ADD FOREIGN KEY (`usid`) REFERENCES `flcn`.`appuser` (`id`);
+CREATE TABLE `flcn`.`sd_payment_entry` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `clid` varchar(20),
+  `created_at` timestamp DEFAULT (now()),
+  `amount` float,
+  `mode` varchar(10),
+  `hisamount` float,
+  `curamount` float,
+  `remarks` varchar(100),
+  `created_by` varchar(10)
+);
 
 ALTER TABLE `flcn`.`job` ADD FOREIGN KEY (`assigned`) REFERENCES `flcn`.`appuser` (`id`);
 
-ALTER TABLE `flcn`.`client` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`invoice_gst_srv_main` (`to`);
+ALTER TABLE `flcn`.`invoice_gst_srv_main` ADD FOREIGN KEY (`created_by`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`item` ADD FOREIGN KEY (`created_by`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`client` ADD FOREIGN KEY (`created_by`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`job_comment` ADD FOREIGN KEY (`usid`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`sd_payment_entry` ADD FOREIGN KEY (`created_by`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`invoice_gst_goods_main` ADD FOREIGN KEY (`created_by`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`invoice_kancha_main` ADD FOREIGN KEY (`created_by`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`invoice_gst_goods_history` ADD FOREIGN KEY (`entry_id`) REFERENCES `flcn`.`invoice_gst_goods_main` (`id`);
+
+ALTER TABLE `flcn`.`product_bill` ADD FOREIGN KEY (`created_by`) REFERENCES `flcn`.`appuser` (`id`);
+
+ALTER TABLE `flcn`.`invoice_gst_goods_history` ADD FOREIGN KEY (`product`) REFERENCES `flcn`.`product_bill` (`id`);
+
+ALTER TABLE `flcn`.`invoice_kancha_main` ADD FOREIGN KEY (`to`) REFERENCES `flcn`.`client` (`id`);
+
+ALTER TABLE `flcn`.`invoice_gst_srv_main` ADD FOREIGN KEY (`to`) REFERENCES `flcn`.`client` (`id`);
+
+ALTER TABLE `flcn`.`invoice_kancha_history` ADD FOREIGN KEY (`entry_id`) REFERENCES `flcn`.`invoice_kancha_main` (`id`);
+
+ALTER TABLE `flcn`.`invoice_gst_goods_main` ADD FOREIGN KEY (`to`) REFERENCES `flcn`.`appuser` (`id`);
 
 ALTER TABLE `flcn`.`invoice_gst_srv_history` ADD FOREIGN KEY (`entry_id`) REFERENCES `flcn`.`invoice_gst_srv_main` (`id`);
 
-ALTER TABLE `flcn`.`invoice_gst_goods_main` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`invoice_gst_goods_history` (`entry_id`);
+ALTER TABLE `flcn`.`invoice_gst_srv_main` ADD FOREIGN KEY (`refjob`) REFERENCES `flcn`.`job` (`id`);
 
-ALTER TABLE `flcn`.`job` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`invoice_gst_goods_main` (`refjob`);
+ALTER TABLE `flcn`.`invoice_gst_srv_history` ADD FOREIGN KEY (`product`) REFERENCES `flcn`.`product_bill` (`id`);
 
-ALTER TABLE `flcn`.`job` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`invoice_gst_srv_main` (`refjob`);
+ALTER TABLE `flcn`.`job_comment` ADD FOREIGN KEY (`jbid`) REFERENCES `flcn`.`job` (`id`);
 
-ALTER TABLE `flcn`.`client` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`invoice_gst_goods_main` (`to`);
+ALTER TABLE `flcn`.`job_item` ADD FOREIGN KEY (`jobid`) REFERENCES `flcn`.`job` (`id`);
 
-ALTER TABLE `flcn`.`job` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`invoice_kancha_main` (`refjob`);
+ALTER TABLE `flcn`.`leadger_sc` ADD FOREIGN KEY (`clid`) REFERENCES `flcn`.`client` (`id`);
 
-ALTER TABLE `flcn`.`invoice_kancha_main` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`invoice_kancha_history` (`entry_id`);
+ALTER TABLE `flcn`.`job` ADD FOREIGN KEY (`clid`) REFERENCES `flcn`.`client` (`id`);
 
-ALTER TABLE `flcn`.`client` ADD FOREIGN KEY (`id`) REFERENCES `flcn`.`leadger_sc` (`clid`);
+ALTER TABLE `flcn`.`job_item` ADD FOREIGN KEY (`item`) REFERENCES `flcn`.`item` (`id`);

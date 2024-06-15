@@ -1,6 +1,6 @@
 
 Table "flcn"."appuser" {
-  "id" int
+  "id" varchar(10) [pk]
   "name" varchar(50)
   "mobile" varchar(15)
   "email" varchar(50)
@@ -13,7 +13,7 @@ Table "flcn"."appuser" {
   "lastlogin_from" varchar(30)
 }
 Table "flcn"."client" {
-  "id" int [pk]
+  "id" varchar(20) [pk]
   "name" varchar(30)
   "mobile" varchar(15)
   "email" varchar(50)
@@ -24,28 +24,39 @@ Table "flcn"."client" {
   "job" varchar (100)
   "remarks" varchar (100)
   "created_by" varchar(10)
-  "created at" timestamp
+ created_at timestamp [default: `now()`]
+
+}
+
+Table "flcn"."product_bill" {
+  "id" varchar(20) [pk]
+  "name" varchar(30)
+  "HSN" varchar(8)
+  "cgst" varchar(10)
+  "sgst" varchar(10)
+  "remarks" varchar (100)
+  "status"  bool
+  "created_by" varchar(10)
+ created_at timestamp [default: `now()`]
 }
 
 Table "flcn"."item" {
-  "id" int [pk]
+  "id" int [pk, increment]
   "name" varchar(30)
   "accessary" varchar (200)
   "complain" varchar (200)
   "make" varchar (200)
-
   "remarks" varchar (100)
   "status"  bool
   "created_by" varchar(10)
-  "created at" timestamp
+ created_at timestamp [default: `now()`]
 }
-
 Table "flcn"."job" {
-  "id" int [pk]
+  "id" varchar(20) [pk]
   "clid" varchar (20)
   "status" varchar (10)
-  "assigned" varchar (20)
-  
+  "echarge" float
+  "assigned" varchar (10)
 }
 Table "flcn"."job_comment" {
   "id" int [pk]
@@ -56,9 +67,9 @@ Table "flcn"."job_comment" {
   "time" timestamp
 }
 Table "flcn"."job_item" {
-  "id" int [pk]
+  "id" int [pk, increment]
   "jobid" varchar (20)
-  "item" varchar (20)
+  "item" int
   "make" varchar (20)
   "model" varchar (30)
   "snno" varchar (30)
@@ -66,9 +77,8 @@ Table "flcn"."job_item" {
   "accessary" varchar (200)
   "complain" varchar (200)
   "rest" float 
-  "icharge" float
   "remarks" varchar (100)
-
+    
 }
 
 Table "flcn"."secuence" {
@@ -78,7 +88,8 @@ Table "flcn"."secuence" {
   "sno" varchar(20)
   "remarks" varchar(40)
   "status" bool
-  "created at" timestamp
+ created_at timestamp [default: `now()`]
+
 }
 Table "flcn"."appinfo" {
   "id" int
@@ -93,14 +104,14 @@ Table "flcn"."invoice_gst_goods_main" {
   "invoice_no" varchar(30)
   "refjob" varchar(20)
   "to" varchar(20)
-  "gst" varbinary
+  "gst" varchar(20)
   "inovice_date" date
   "gross_amount" float
   "cgst_amount" float
   "ssgst_amount" float
   "total_amount" float
   "remarks" varchar(100)
-  "created_at" timestamp
+ created_at timestamp [default: `now()`]
   "created_by" varchar(10)
   "paid" bool
 }
@@ -108,7 +119,8 @@ Table "flcn"."invoice_gst_goods_main" {
 Table "flcn"."invoice_gst_goods_history" {
   "id" int
   "entry_id" int
-  "created at" timestamp
+ created_at timestamp [default: `now()`]
+
   "product" varchar(255)
   "qty" float
   "HSN" varchar(8)
@@ -128,14 +140,14 @@ Table "flcn"."invoice_gst_srv_main" {
   "invoice_no" varchar(30)
   "refjob" varchar(20)
   "to" varchar(20)
-  "gst" varbinary
+  "gst" varchar(20)
   "inovice_date" date
   "gross_amount" float
   "cgst_amount" float
   "ssgst_amount" float
   "total_amount" float
   "remarks" varchar(100)
-  "created_at" timestamp
+ created_at timestamp [default: `now()`]
   "created_by" varchar(10)
   "paid" bool
 }
@@ -143,7 +155,8 @@ Table "flcn"."invoice_gst_srv_main" {
 Table "flcn"."invoice_gst_srv_history" {
   "id" int
   "entry_id" int
-  "created at" timestamp
+ created_at timestamp [default: `now()`]
+
   "product" varchar(255)
   "qty" float
   "HSN" varchar(8)
@@ -168,7 +181,7 @@ Table "flcn"."invoice_kancha_main" {
   "gross_amount" float
   "total_amount" float
   "remarks" varchar(100)
-  "created_at" timestamp
+ created_at timestamp [default: `now()`]
   "created_by" varchar(10)
   "paid" bool
 }
@@ -176,7 +189,8 @@ Table "flcn"."invoice_kancha_main" {
 Table "flcn"."invoice_kancha_history" {
   "id" int
   "entry_id" int
-  "created at" timestamp
+ created_at timestamp [default: `now()`]
+
   "product" varchar(255)
   "qty" float
   "total_ammount" float
@@ -196,34 +210,67 @@ Table "flcn"."leadger_sc" {
   "mode" varchar(10)
   "remarks" varchar(50)
   "refno" varchar(50)
-  "created at" timestamp
+ created_at timestamp [default: `now()`]
+
 }
-Ref: "flcn"."job"."clid" < "flcn"."client"."id"
+Table "flcn"."sd_payment_entry" {
+  "id" int [pk, increment]
+  "clid" varchar(20)
+  created_at timestamp [default: `now()`]
+  "amount" float
+  "mode" varchar(10)
+  "hisamount" float
+  "curamount" float
+  "remarks" varchar(100)
+  "created_by" varchar(10)
+}
 
-Ref: "flcn"."job_item"."jobid" < "flcn"."job"."id"
-
-Ref: "flcn"."job_item"."item" < "flcn"."item"."id"
-
-Ref: "flcn"."job"."id" < "flcn"."job_comment"."jbid"
-
-Ref: "flcn"."appuser"."id" < "flcn"."job_comment"."usid"
 
 Ref: "flcn"."appuser"."id" < "flcn"."job"."assigned"
 
-Ref: "flcn"."invoice_gst_srv_main"."to" < "flcn"."client"."id"
+Ref: "flcn"."appuser"."id" < "flcn"."invoice_gst_srv_main"."created_by"
+
+Ref: "flcn"."appuser"."id" < "flcn"."item"."created_by"
+
+Ref: "flcn"."appuser"."id" < "flcn"."client"."created_by"
+
+Ref: "flcn"."appuser"."id" < "flcn"."job_comment"."usid"
+
+Ref: "flcn"."appuser"."id" < "flcn"."sd_payment_entry"."created_by"
+
+Ref: "flcn"."appuser"."id" < "flcn"."invoice_gst_goods_main"."created_by"
+
+Ref: "flcn"."appuser"."id" < "flcn"."invoice_kancha_main"."created_by"
+
+Ref: "flcn"."invoice_gst_goods_main"."id" < "flcn"."invoice_gst_goods_history"."entry_id"
+
+Ref: "flcn"."appuser"."id" < "flcn"."product_bill"."created_by"
+
+Ref: "flcn"."product_bill"."id" < "flcn"."invoice_gst_goods_history"."product"
+
+Ref: "flcn"."client"."id" < "flcn"."invoice_kancha_main"."to"
+
+Ref: "flcn"."client"."id" < "flcn"."invoice_gst_srv_main"."to"
+
+Ref: "flcn"."invoice_kancha_main"."id" < "flcn"."invoice_kancha_history"."entry_id"
+
+Ref: "flcn"."appuser"."id" < "flcn"."invoice_gst_goods_main"."to"
 
 Ref: "flcn"."invoice_gst_srv_main"."id" < "flcn"."invoice_gst_srv_history"."entry_id"
 
-Ref: "flcn"."invoice_gst_goods_history"."entry_id" < "flcn"."invoice_gst_goods_main"."id"
+Ref: "flcn"."job"."id" < "flcn"."invoice_gst_srv_main"."refjob"
 
-Ref: "flcn"."invoice_gst_goods_main"."refjob" < "flcn"."job"."id"
+Ref: "flcn"."product_bill"."id" < "flcn"."invoice_gst_srv_history"."product"
 
-Ref: "flcn"."invoice_gst_srv_main"."refjob" < "flcn"."job"."id"
+Ref: "flcn"."job"."id" < "flcn"."job_comment"."jbid"
 
-Ref: "flcn"."invoice_gst_goods_main"."to" < "flcn"."client"."id"
+Ref: "flcn"."job"."id" < "flcn"."job_item"."jobid"
 
-Ref: "flcn"."invoice_kancha_main"."refjob" < "flcn"."job"."id"
 
-Ref: "flcn"."invoice_kancha_history"."entry_id" < "flcn"."invoice_kancha_main"."id"
+Ref: "flcn"."client"."id" < "flcn"."leadger_sc"."clid"
 
-Ref: "flcn"."leadger_sc"."clid" < "flcn"."client"."id"
+Ref: "flcn"."client"."id" < "flcn"."job"."clid"
+
+
+
+Ref: "flcn"."item"."id" < "flcn"."job_item"."item"

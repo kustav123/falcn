@@ -69,7 +69,6 @@
 
         $('#id').val('');
         $('#purpose').val('insert');
-
         $("#btn-save").html('Add');
     }
 
@@ -96,6 +95,7 @@
                 $('#name').val(res.name);
                 $('#email').val(res.email);
                 $('#mobile').val(res.mobile);
+                $('#address').val(res.address)
                 $("#btn-save").html('Update');
             }
         });

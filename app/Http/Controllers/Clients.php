@@ -51,12 +51,18 @@ class Clients extends Controller
             $msg = "Successfully client created";
         } else if ($purpose == 'update') {
             $request->validate([
-                'name' => 'required',
-                'email' => 'required|string|email',
+                'id' => 'required',
+                // 'email' => 'required|string|email',
             ]);
             Client::where('id', $request->id)->update([
                 'name' => $request->name,
-                'email' => $request->email
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'address' => $request->address,
+                'status'=> $request->status,
+                'due_ammount' => $request->due_ammount,
+                'gst' => $request->gst,
+                'remarks' => $request->remarks
             ]);
             $msg = "Successfully updated client";
         }
@@ -69,7 +75,7 @@ class Clients extends Controller
 
     public function edit(Request $request)
     {
-        $user  = Client::select(['id as userId', 'name', 'email', 'mobile'])->where(['id' => $request->id])->first();
+        $user  = Client::select(['id as userId', 'name', 'email', 'mobile', 'address','gst', 'job'])->where(['id' => $request->id])->first();
 
         return response()->json($user);
     }

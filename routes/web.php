@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('store', [Clients::class, 'store']);
         Route::post('edit', [Clients::class, 'edit']);
         Route::post('delete', [Clients::class, 'destroy']);
+        Route::post('disable', [Clients::class,'disable']);
     });
 
     Route::prefix('items')->group(function () {

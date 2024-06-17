@@ -87,7 +87,6 @@
             dataType: 'json',
             success: function(res) {
                 $('.edit-' + id).html(`Edit`);
-
                 $('#staffModal').html("Edit Client");
                 $('#addStaffModal').modal('show');
                 $('#id').val(res.userId);
@@ -101,29 +100,38 @@
         });
     }
 
-    const deleteStaff = (id) => {
-        $('.delete-' + id).html(`
-            <div class="spinner-border spinner-border-sm" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>`);
 
-        if (confirm("Delete Record?") == true) {
-            $.ajax({
-                type: "POST",
-                url: "{{ url('clients/delete') }}",
-                data: {
-                    id: id
-                },
-                dataType: 'json',
-                success: function(res) {
-                    $.notify("Successfully delete client", "success");
-                    $('.delete-' + id).html(`Delete`)
-                    var oTable = $('#dataTable').dataTable();
-                    oTable.fnDraw(false);
-                }
-            });
+            const deleteStaff = (id) => {
+            const deleteButton = $('.delete-' + id);
+
+            deleteButton.html(`
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>`);
+
+            if (confirm("Disable Record? Only Admin can undo!!")) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('clients/disable') }}",
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $.notify("Successfully disable client", "success");
+                        deleteButton.html(`Disable`);
+                        var oTable = $('#dataTable').dataTable();
+                        oTable.fnDraw(false);
+                    },
+                    error: function(err) {
+                        $.notify("Error deleting client", "error");
+                        deleteButton.html(`Disable`);
+                    }
+                });
+            } else {
+                deleteButton.html(`Disable`);
+            }
         }
-    }
 
     $('#staffForm').submit(function(e) {
         e.preventDefault();

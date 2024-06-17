@@ -12,7 +12,7 @@ class Clients extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Client::select(['id as userId', 'name', 'email', 'mobile', 'address', 'status', 'due_ammount', 'gst', 'job', 'remarks', 'created_by', 'created_at']);
+            $data = Client::select(['id as userId', 'name', 'email', 'mobile', 'address', 'status', 'due_ammount', 'gst', 'job', 'remarks', 'created_by', 'created_at']) ->where('status',1);
             // ->where('status', $this->ROLE_STAFF);
 
             return DataTables::of($data)
@@ -42,10 +42,10 @@ class Clients extends Controller
                 'email' => $request->email,
                 'mobile' => $request->mobile,
                 'address' => $request->address,
-                'status'=> $request->status,
                 'due_ammount' => $request->due_ammount,
                 'gst' => $request->gst,
-                'remarks' => $request->remarks
+                'remarks' => $request->remarks,
+                'status' => '1'
             ]);
 
             $msg = "Successfully client created";
@@ -83,6 +83,16 @@ class Clients extends Controller
     public function destroy(Request $request)
     {
         $user = Client::where('id', $request->id)->delete();
+
+        return Response()->json($user);
+    }
+    public function disable(Request $request)
+    {
+        $user = Client::where('id', $request->id)->update([
+            'status' => '0'
+        ]
+
+        );
 
         return Response()->json($user);
     }

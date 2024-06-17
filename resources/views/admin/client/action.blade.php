@@ -3,6 +3,6 @@
     Edit
 </a>
 <a href="javascript:void(0);" id="delete-compnay" onClick="deleteStaff('{{ $row->userId }}')" data-toggle="tooltip"
-    data-original-title="Delete" class="delete btn btn-danger delete-{{ $row->userId }}">
-    Delete
+    data-original-title="Disable" class="delete btn btn-danger delete-{{ $row->userId }}">
+    Disable
 </a>

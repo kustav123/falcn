@@ -79,12 +79,12 @@ class Clients extends Controller
         return response()->json($user);
     }
 
-    public function destroy(Request $request)
-    {
-        $user = Client::where('id', $request->id)->delete();
+    // public function destroy(Request $request)
+    // {
+    //     $user = Client::where('id', $request->id)->delete();
 
-        return Response()->json($user);
-    }
+    //     return Response()->json($user);
+    // }
     public function disable(Request $request)
     {
         $user = Client::where('id', $request->id)->update([

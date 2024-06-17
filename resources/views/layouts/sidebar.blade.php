@@ -27,12 +27,31 @@
     <div class="sidebar-heading">
         Office
     </div>
-    <li class="nav-item">
+
+     <!-- Nav Item - Pages Collapse Menu -->
+     @php
+        $segment1 = Request::segment(1);
+        $pages = array('clients');
+    @endphp
+     <li class="nav-item @if(in_array($segment1, $pages)) active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Customer</span>
+        </a>
+        <div id="collapseTwo" class="collapse @if(in_array($segment1, $pages)) show @endif" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Customer:</h6>
+                <a class="collapse-item @if(in_array($segment1, $pages)) active @endif" href="{{url('/clients')}}">Clients</a>
+            </div>
+        </div>
+    </li>
+    
+    <li class="nav-item {{ request()->is('staffs') ? 'active' : ''}}">
         <a class="nav-link" href="{{url('/staffs')}}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Staffs</span></a>
     </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

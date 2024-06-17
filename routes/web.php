@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Clients;
 use App\Http\Controllers\Staffs;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('store', [Staffs::class, 'store']);
         Route::post('edit', [Staffs::class, 'edit']);
         Route::post('delete', [Staffs::class, 'destroy']);
+    });
+
+    Route::prefix('clients')->group(function () {
+        Route::get('/', [Clients::class, 'index']);
+        Route::post('store', [Clients::class, 'store']);
+        Route::post('edit', [Clients::class, 'edit']);
+        Route::post('delete', [Clients::class, 'destroy']);
     });
 
     Route::get('/logout', [AuthController::class, 'logout']);

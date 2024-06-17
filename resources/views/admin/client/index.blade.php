@@ -20,6 +20,7 @@
                             <th>Id</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Mobile</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -58,12 +59,17 @@
                             </div>
                         </div>
 
-                        <div class="form-group container-field-password">
-                            {{-- dynamically update this section --}}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Mobile</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="mobile" name="mobile"
+                                    placeholder="Enter mobile" required="">
+                            </div>
                         </div>
 
+
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="btn-save">Add Staff
+                            <button type="submit" class="btn btn-primary" id="btn-save">Add Client
                             </button>
                         </div>
                     </form>

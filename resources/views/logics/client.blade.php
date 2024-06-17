@@ -26,6 +26,10 @@
                     name: 'email'
                 },
                 {
+                    data: 'mobile',
+                    name: 'mobile'
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false
@@ -39,7 +43,7 @@
 
     const add = () => {
         $('#staffForm').trigger("reset");
-        $('#staffModal').html("Add Staff");
+        $('#staffModal').html("Add Client");
         $('#addStaffModal').modal('show');
 
         $('#id').val('');
@@ -70,6 +74,7 @@
                 $('#purpose').val('update');
                 $('#name').val(res.name);
                 $('#email').val(res.email);
+                $('#mobile').val(res.mobile);
                 $("#btn-save").html('Update');
             }
         });

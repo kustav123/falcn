@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clients;
+use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\Staffs;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('store', [Clients::class, 'store']);
         Route::post('edit', [Clients::class, 'edit']);
         Route::post('delete', [Clients::class, 'destroy']);
+    });
+
+    Route::prefix('items')->group(function () {
+        Route::get('/', [ItemsController::class, 'index']);
+        Route::post('store', [ItemsController::class, 'store']);
+        Route::post('edit', [ItemsController::class, 'edit']);
+        Route::post('delete', [ItemsController::class, 'destroy']);
     });
 
     Route::get('/logout', [AuthController::class, 'logout']);

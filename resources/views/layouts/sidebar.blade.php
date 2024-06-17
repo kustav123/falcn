@@ -31,18 +31,19 @@
      <!-- Nav Item - Pages Collapse Menu -->
      @php
         $segment1 = Request::segment(1);
-        $pages = array('clients');
+        $pages = array('clients', 'items');
     @endphp
      <li class="nav-item @if(in_array($segment1, $pages)) active @endif">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Customer</span>
+            <span>Master Data</span>
         </a>
         <div id="collapseTwo" class="collapse @if(in_array($segment1, $pages)) show @endif" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Customer:</h6>
-                <a class="collapse-item @if(in_array($segment1, $pages)) active @endif" href="{{url('/clients')}}">Clients</a>
+                <a class="collapse-item {{ request()->is('clients') ? 'active' : ''}}" href="{{url('/clients')}}">Clients</a>
+                <a class="collapse-item {{ request()->is('items') ? 'active' : ''}}" href="{{url('/items')}}">Items</a>
             </div>
         </div>
     </li>

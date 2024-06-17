@@ -12,7 +12,7 @@ class Clients extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Client::select(['id as userId', 'name', 'email', 'mobile']);
+            $data = Client::select(['id as userId', 'name', 'email', 'mobile', 'address', 'status', 'due_ammount', 'gst', 'job', 'remarks', 'created_by', 'created_at']);
             // ->where('status', $this->ROLE_STAFF);
 
             return DataTables::of($data)
@@ -33,15 +33,19 @@ class Clients extends Controller
         if ($purpose == 'insert') {
             $request->validate([
                 'name' => 'required',
-                'email' => 'string|email|unique:client',
                 'mobile' => 'required|numeric|digits:10'
             ]);
 
             Client::create([
                 'id' => 'C_' . mt_rand(1111, 9999),
                 'name' => $request->name,
-                'email' => $request->email,   
-                'mobile' => $request->mobile
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'address' => $request->address,
+                'status'=> $request->status,
+                'due_ammount' => $request->due_ammount,
+                'gst' => $request->gst,
+                'remarks' => $request->remarks
             ]);
 
             $msg = "Successfully client created";
@@ -49,7 +53,7 @@ class Clients extends Controller
             $request->validate([
                 'name' => 'required',
                 'email' => 'required|string|email',
-            ]);      
+            ]);
             Client::where('id', $request->id)->update([
                 'name' => $request->name,
                 'email' => $request->email

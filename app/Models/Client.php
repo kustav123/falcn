@@ -16,10 +16,14 @@ class Client extends Model
         'name',
         'mobile',
         'email',
-        'password',
         'address',
         'status',
         'due_ammount',
-        'gst'
+        'gst',
+        'job',
+        'remarks',
+        'created_by',
+        'created_at',
+
     ];
 }

@@ -30,6 +30,27 @@
                     name: 'mobile'
                 },
                 {
+                    data: 'address',
+                    name: 'address'
+                },
+                {
+                    data: 'gst',
+                    name: 'gst'
+                },
+                {
+                    data: 'due_ammount',
+                    name: 'due_ammount'
+                },
+                {
+                    data: 'job',
+                    name: 'job'
+                },
+                {
+                    data: 'remarks',
+                    name: 'remarks'
+                },
+
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false

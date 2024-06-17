@@ -21,6 +21,11 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Mobile</th>
+                            <th>Address</th>
+                            <th>GST No</th>
+                            <th>Due Ammount</th>
+                            <th>JOB</th>
+                            <th>Remarks</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -47,23 +52,56 @@
                             <label for="name" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="Enter name" required="">
+                                    placeholder="Enter name" required="" maxlength="30">
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Email</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="Enter email" required="">
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Mobile</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="mobile" name="mobile"
-                                    placeholder="Enter mobile" required="">
+                                    placeholder="Enter valid mobile" required="" maxlength="10" pattern="[6-9]{1}[0-9]{9}" title="Enter a valid 10-digit Indian mobile number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="email" name="email"
+                                    placeholder="Enter Email address" maxlength="30">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="address" name="address"
+                                    placeholder="Enter Address" maxlength="40">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">GST No</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="gst" name="gst" placeholder="Enter GST No." maxlength="15">
+                                <div id="gst-error" style="color: red; display: none;">Invalid GST number</div>
+                            </div>
+                        </div>
+
+                        <script>
+                            document.getElementById('gst').addEventListener('input', function() {
+                                var gstInput = this.value;
+                                var gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+                                var gstError = document.getElementById('gst-error');
+
+                                if (gstInput === '' || gstPattern.test(gstInput)) {
+                                    gstError.style.display = 'none';
+                                } else {
+                                    gstError.style.display = 'block';
+                                }
+                            });
+                        </script>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Remarks</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="remarks" name="remarks"
+                                    placeholder="Enter Remarks " maxlength="100">
                             </div>
                         </div>
 

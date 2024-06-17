@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Client;
 use Exception;
 use Illuminate\Http\Request;
@@ -45,7 +44,7 @@ class Clients extends Controller
                 'due_ammount' => $request->due_ammount,
                 'gst' => $request->gst,
                 'remarks' => $request->remarks,
-                'status' => '1'
+                'status' => '1',
             ]);
 
             $msg = "Successfully client created";

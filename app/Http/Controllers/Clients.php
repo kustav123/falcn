@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables as DataTables;
 
 class Clients extends Controller
@@ -45,6 +46,7 @@ class Clients extends Controller
                 'gst' => $request->gst,
                 'remarks' => $request->remarks,
                 'status' => '1',
+                'created_by' => Auth::user()->id
             ]);
 
             $msg = "Successfully client created";
@@ -61,7 +63,8 @@ class Clients extends Controller
                 'status'=> $request->status,
                 'due_ammount' => $request->due_ammount,
                 'gst' => $request->gst,
-                'remarks' => $request->remarks
+                'remarks' => $request->remarks,
+                'created_by' => Auth::user()->id
             ]);
             $msg = "Successfully updated client";
         }

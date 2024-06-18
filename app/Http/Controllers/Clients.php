@@ -33,8 +33,11 @@ class Clients extends Controller
         if ($purpose == 'insert') {
             $request->validate([
                 'name' => 'required',
-                'mobile' => 'required|numeric|digits:10'
+                'mobile' => 'required|numeric|digits:10|unique:client,mobile'
+            ], [
+                'mobile.unique' => 'The mobile number you entered is already added as client.'
             ]);
+
 
             Client::create([
                 'id' => 'C_' . mt_rand(1111, 9999),

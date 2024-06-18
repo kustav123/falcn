@@ -63,15 +63,54 @@
     });
 
     const add = () => {
-        $('#staffForm').trigger("reset");
-        $('#staffModal').html("Add Client");
-        $('#addStaffModal').modal('show');
+    $('#staffForm').trigger("reset");
+    $('#staffModal').html("Add Client");
+    $('#addStaffModal').modal('show');
 
-        $('#id').val('');
-        $('#purpose').val('insert');
-        $("#btn-save").html('Add');
-    }
+    $('#id').val('');
+    $('#purpose').val('insert');
+    $("#btn-save").html('Add');
 
+    // Clear previous errors
+    clearErrors();
+}
+
+const clearErrors = () => {
+    $('.form-group').removeClass('has-error');
+    $('.help-block').remove();
+    $("#btn-save").html('Add');
+}
+
+$('#staffForm').on('submit', function (e) {
+    e.preventDefault();
+
+    let formData = $(this).serialize();
+    let url = '/clients/store';
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        success: function (data) {
+            // Handle success
+            $('#addStaffModal').modal('hide');
+            // Possibly reload the data or update the UI
+        },
+        error: function (xhr) {
+            // Clear previous errors
+            clearErrors();
+
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                let errors = xhr.responseJSON.errors;
+                for (let key in errors) {
+                    let errorField = $(`#${key}`);
+                    errorField.closest('.form-group').addClass('has-error');
+                    errorField.after(`<span class="help-block">${errors[key][0]}</span>`);
+                }
+            }
+        }
+    });
+});
     const editStaff = (id) => {
         $('.edit-' + id).html(`
             <div class="spinner-border spinner-border-sm" role="status">

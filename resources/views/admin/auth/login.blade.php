@@ -10,15 +10,20 @@
     <meta name="author" content="">
 
     <title>Login</title>
+    <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
 
-
-    <link href="{{asset('vendor/fontawesome-free/css/login.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/login.css')}}" rel="stylesheet" type="text/css">
 
 
         <style>
             .center-text {
                 text-align: center;
             }
+            .lebel {
+    font-size: -60em;
+    color: #0f0; /* Green color */
+    text-transform: uppercase;
+}
         </style>
 
 
@@ -38,24 +43,25 @@
                                 @csrf
 
                                 <div class="inputBox">
-                                    <label for="exampleInputEmail">Email Address</label>
-                                    <input type="email" id="exampleInputEmail" aria-describedby="emailHelp" name="email" placeholder="Enter Email Address">
+                                    <label for="exampleInputEmail" class="lebel">Email Address</label>
+                                    <input type="text" id="exampleInputEmail" aria-describedby="emailHelp" name="email" >
                                 </div>
                                 <div class="inputBox">
-                                    <label for="exampleInputPassword">Password</label>
-                                    <input type="password" id="exampleInputPassword" name="password" placeholder="Enter Password">
+                                    <label for="exampleInputPassword" class="lebel">Password</label>
+                                    <input type="password" id="exampleInputPassword" name="password" >
                                 </div>
 
                         <div class="links">
                             {{-- <a href="#">Forgot Password</a> <a href="#">Signup</a> --}}
-                            <br>
                             <br>
                         </div>
 
                         <div class="inputBox">
 
                         <input type="submit" value="Login">
-
+                        @error('email')
+                        <div class="alert alert-danger mt-3" role="alert">{{ $message }}</div>
+                    @enderror
                         </div>
 
                         </div>

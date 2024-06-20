@@ -16,7 +16,7 @@ class AuthController extends Controller
 
         // if ($request->session()->getId() === null) {
         // print_r(bcrypt(12345));
-        // die; 
+        // die;
         return view('admin.auth.login');
         // } else {
         // return redirect()->intended('/');
@@ -47,7 +47,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            $request->user()->update([
+                'lastlogin_from' => $request->getClientIp()
+            ]);
             return redirect()->intended('/');
+
+
         }
 
         return back()->withErrors([

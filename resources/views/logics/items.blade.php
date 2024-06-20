@@ -89,29 +89,7 @@
         });
     }
 
-    // const deleteStaff = (id) => {
-    //     $('.delete-' + id).html(`
-    //         <div class="spinner-border spinner-border-sm" role="status">
-    //             <span class="sr-only">Loading...</span>
-    //         </div>`);
 
-    //     if (confirm("Delete Record?") == true) {
-    //         $.ajax({
-    //             type: "POST",
-    //             url: "{{ url('items/delete') }}",
-    //             data: {
-    //                 id: id
-    //             },
-    //             dataType: 'json',
-    //             success: function(res) {
-    //                 $.notify("Successfully delete item", "success");
-    //                 $('.delete-' + id).html(`Delete`)
-    //                 var oTable = $('#dataTable').dataTable();
-    //                 oTable.fnDraw(false);
-    //             }
-    //         });
-    //     }
-    // }
     const deleteStaff = (id) => {
             const deleteButton = $('.delete-' + id);
 

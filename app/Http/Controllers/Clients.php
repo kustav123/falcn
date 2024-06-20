@@ -62,7 +62,6 @@ class Clients extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'address' => $request->address,
-                'status'=> $request->status,
                 'due_ammount' => $request->due_ammount,
                 'gst' => $request->gst,
                 'remarks' => $request->remarks,

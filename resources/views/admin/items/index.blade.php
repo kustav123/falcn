@@ -6,7 +6,8 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"></h1>
         <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="add()">
-            Add </button>
+            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+            Add New Item</button>
     </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3">

@@ -61,13 +61,11 @@ class Clients extends Controller
             Client::where('id', $request->id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'mobile' => $request->mobile,
                 'address' => $request->address,
                 'status'=> $request->status,
                 'due_ammount' => $request->due_ammount,
                 'gst' => $request->gst,
                 'remarks' => $request->remarks,
-                'created_by' => Auth::user()->id
             ]);
             $msg = "Successfully updated client";
         }

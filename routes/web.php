@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [ItemsController::class, 'index']);
         Route::post('store', [ItemsController::class, 'store']);
         Route::post('edit', [ItemsController::class, 'edit']);
-        Route::post('delete', [ItemsController::class, 'destroy']);
+        Route::post('disable', [ItemsController::class, 'disable']);
     });
 
     Route::get('/logout', [AuthController::class, 'logout']);

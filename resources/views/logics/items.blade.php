@@ -11,13 +11,29 @@
 
             ajax: "{{ url('items') }}",
             columns: [{
-                    data: 'userId',
-                    name: 'userId',
+                    data: 'id',
+                    name: 'id',
                     orderable: false
                 },
                 {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'make',
+                    name: 'make'
+                },
+                {
+                    data: 'accessary',
+                    name: 'accessary'
+                },
+                {
+                    data: 'complain',
+                    name: 'complain'
+                },
+                {
+                    data: 'remarks',
+                    name: 'remarks'
                 },
                 {
                     data: 'action',
@@ -60,38 +76,73 @@
 
                 $('#staffModal').html("Edit Item");
                 $('#addStaffModal').modal('show');
-                $('#id').val(res.userId);
+                $('#id').val(res.id);
                 $('#purpose').val('update');
                 $('#name').val(res.name);
+                $('#name').attr('disabled', true);
+                $('#make').val(res.make);
+                $('#accessary').val(res.accessary);
+                $('#complain').val(res.complain);
+                $('#remarks').val(res.remarks);
                 $("#btn-save").html('Update');
             }
         });
     }
 
+    // const deleteStaff = (id) => {
+    //     $('.delete-' + id).html(`
+    //         <div class="spinner-border spinner-border-sm" role="status">
+    //             <span class="sr-only">Loading...</span>
+    //         </div>`);
+
+    //     if (confirm("Delete Record?") == true) {
+    //         $.ajax({
+    //             type: "POST",
+    //             url: "{{ url('items/delete') }}",
+    //             data: {
+    //                 id: id
+    //             },
+    //             dataType: 'json',
+    //             success: function(res) {
+    //                 $.notify("Successfully delete item", "success");
+    //                 $('.delete-' + id).html(`Delete`)
+    //                 var oTable = $('#dataTable').dataTable();
+    //                 oTable.fnDraw(false);
+    //             }
+    //         });
+    //     }
+    // }
     const deleteStaff = (id) => {
-        $('.delete-' + id).html(`
-            <div class="spinner-border spinner-border-sm" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>`);
+            const deleteButton = $('.delete-' + id);
 
-        if (confirm("Delete Record?") == true) {
-            $.ajax({
-                type: "POST",
-                url: "{{ url('items/delete') }}",
-                data: {
-                    id: id
-                },
-                dataType: 'json',
-                success: function(res) {
-                    $.notify("Successfully delete item", "success");
-                    $('.delete-' + id).html(`Delete`)
-                    var oTable = $('#dataTable').dataTable();
-                    oTable.fnDraw(false);
-                }
-            });
+            deleteButton.html(`
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>`);
+
+            if (confirm("Disable Record? Only Admin can undo!!")) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('items/disable') }}",
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $.notify("Successfully disabled item", "success");
+                        deleteButton.html(`Disable`);
+                        var oTable = $('#dataTable').dataTable();
+                        oTable.fnDraw(false);
+                    },
+                    error: function(err) {
+                        $.notify("Error disabling item", "error");
+                        deleteButton.html(`Disable`);
+                    }
+                });
+            } else {
+                deleteButton.html(`Disable`);
+            }
         }
-    }
-
     $('#staffForm').submit(function(e) {
         e.preventDefault();
 

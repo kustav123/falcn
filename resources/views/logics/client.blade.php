@@ -97,16 +97,9 @@ $('#staffForm').on('submit', function (e) {
             // Possibly reload the data or update the UI
         },
         error: function (xhr) {
-            // Clear previous errors
-            clearErrors();
-
-            if (xhr.responseJSON && xhr.responseJSON.errors) {
-                let errors = xhr.responseJSON.errors;
-                for (let key in errors) {
-                    let errorField = $(`#${key}`);
-                    errorField.closest('.form-group').addClass('has-error');
-                    errorField.after(`<span class="help-block">${errors[key][0]}</span>`);
-                }
+            if (xhr.status != 200) {
+                clearErrors()
+                $.notify(xhr.responseJSON.message);
             }
         }
     });
@@ -133,6 +126,7 @@ $('#staffForm').on('submit', function (e) {
                 $('#name').val(res.name);
                 $('#email').val(res.email);
                 $('#mobile').val(res.mobile);
+                $('#mobile').attr('disabled', true);
                 $('#address').val(res.address)
                 $("#btn-save").html('Update');
             }
@@ -157,13 +151,13 @@ $('#staffForm').on('submit', function (e) {
                     },
                     dataType: 'json',
                     success: function(res) {
-                        $.notify("Successfully disable client", "success");
+                        $.notify("Successfully disabled client", "success");
                         deleteButton.html(`Disable`);
                         var oTable = $('#dataTable').dataTable();
                         oTable.fnDraw(false);
                     },
                     error: function(err) {
-                        $.notify("Error deleting client", "error");
+                        $.notify("Error disableing client", "error");
                         deleteButton.html(`Disable`);
                     }
                 });

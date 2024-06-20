@@ -19,6 +19,10 @@
                         <tr>
                             <th>Id</th>
                             <th>Name</th>
+                            <th>Make</th>
+                            <th>Accessories</th>
+                            <th>complaint</th>
+                            <th>Remarks</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -49,6 +53,34 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="make" class="col-sm-2 control-label">Make List</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="make" name="make"
+                                    placeholder="Enter Make list ',' separeted " required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="accessary" class="col-sm-2 control-label">Accessories</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="accessary" name="accessary"
+                                    placeholder="Enter Accessories list ',' separeted " required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="complain" class="col-sm-2 control-label">Complaint List</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="complain" name="complain"
+                                    placeholder="Enter Complaint list ',' separeted " required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remarks" class="col-sm-2 control-label">Remarks</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="remarks" name="remarks"
+                                    placeholder="Remarks" >
+                            </div>
+                        </div>
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="submit" class="btn btn-primary" id="btn-save">Add Item
                             </button>

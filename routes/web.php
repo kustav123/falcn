@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clients;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\ReloadCacheController;
 use App\Http\Controllers\Staffs;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,11 @@ Route::post('/login', [AuthController::class, 'postLogin']);
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'index'])->middleware('auth');
 
+
+    Route::prefix('reloadcache')->group(function () {
+        Route::get('/', [ReloadCacheController::class, 'index']);
+
+    });
     Route::prefix('staffs')->group(function () {
         Route::get('/', [Staffs::class, 'index']);
         Route::post('store', [Staffs::class, 'store']);

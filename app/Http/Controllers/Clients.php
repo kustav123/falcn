@@ -5,13 +5,33 @@ use App\Models\Client;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables as DataTables;
+
 
 class Clients extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
+
+            // $data = Cache::rememberForever('client_main', function () {
+            //     return Client::select([
+            //         'id as userId',
+            //         'name',
+            //         'email',
+            //         'mobile',
+            //         'address',
+            //         'status',
+            //         'due_ammount',
+            //         'gst',
+            //         'job',
+            //         'remarks',
+            //         'created_by',
+            //         'created_at'
+            //     ])->where('status', 1)->get(); // Use get() to retrieve the collection
+            // });
             $data = Client::select(['id as userId', 'name', 'email', 'mobile', 'address', 'status', 'due_ammount', 'gst', 'job', 'remarks', 'created_by', 'created_at']) ->where('status',1);
             // ->where('status', $this->ROLE_STAFF);
 
@@ -53,6 +73,9 @@ class Clients extends Controller
             ]);
 
             $msg = "Successfully client created";
+            Cache::forget('act_users');
+            Cache::forget('total_client');
+            Cache::forget('client_main');
         } else if ($purpose == 'update') {
             $request->validate([
                 'id' => 'required',
@@ -92,10 +115,13 @@ class Clients extends Controller
     {
         $user = Client::where('id', $request->id)->update([
             'status' => '0'
+
         ]
 
         );
-
+        Cache::forget('act_users');
+        Cache::forget('total_client');
         return Response()->json($user);
+
     }
 }

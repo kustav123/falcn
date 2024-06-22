@@ -2,41 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rawproducts;
+use App\Models\Finishproducts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
-
-class RawproductController extends Controller
+class FinishproductController extends Controller
 {
     public function index(Request $request)
     {
 
         if ($request->ajax()) {
 
-            $data = Rawproducts::select([
-                'id as rid',
+            $data = Finishproducts::select([
+                'id as fid',
                 'name',
                 'unit',
                 'current_stock',
                 'remarks'
             ])->where('status', 1);
-            // Log::info('User data fetched:', ['data' => $data->toSql()]); // Log SQL query
 
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                return view('inv.raw.action', compact('row'));
+                return view('inv.finish.action', compact('row'));
             })
             ->rawColumns(['action'])
             ->make(true);
 
     }
 
-    return view('inv.raw.index');
+    return view('inv.finish.index');
   }
-
   public function store(Request $request)
   {
       $msg = "";
@@ -47,8 +44,8 @@ class RawproductController extends Controller
               'unit' => 'required'
             ]);
 
-          Rawproducts::create([
-              'id' => 'S_' . mt_rand(1111, 9999),
+          Finishproducts::create([
+              'id' => 'F_' . mt_rand(1111, 9999),
               'name' => $request->name,
               'unit' => $request->unit,
               'remarks' => $request -> remarks,
@@ -57,7 +54,7 @@ class RawproductController extends Controller
 
           ]);
 
-          $msg = "Successfully products created";
+          $msg = "Successfully Product created";
 
       } else if ($purpose == 'update') {
           $request->validate([
@@ -67,7 +64,7 @@ class RawproductController extends Controller
           ]);
         //   Log::info('User data fetched:', ['user' => $request->id]);
 
-          Rawproducts::where('id', $request->id)->update([
+          Finishproducts::where('id', $request->id)->update([
               'remarks' => $request->remarks,
           ]);
           $msg = "Successfully  products updated";
@@ -78,14 +75,13 @@ class RawproductController extends Controller
           "message" => $msg,
       ]);
   }
-
   public function edit(Request $request)
   {
 
 
-      $user  = Rawproducts::select([
+      $user  = Finishproducts::select([
 
-        'id as rid',
+        'id as fid',
         'name',
         'unit',
         'remarks'
@@ -100,7 +96,7 @@ class RawproductController extends Controller
 
   public function disable(Request $request)
   {
-      $user = Rawproducts::where('id', $request->id)->update([
+      $user = Finishproducts::where('id', $request->id)->update([
           'status' => '0'
 
       ]
@@ -111,3 +107,4 @@ class RawproductController extends Controller
 
   }
 }
+

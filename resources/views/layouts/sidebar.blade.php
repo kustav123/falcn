@@ -58,6 +58,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Inventory:</h6>
                 <a class="collapse-item {{ request()->is('raw-products') ? 'active' : ''}}" href="{{url('/rawproducts')}}">Raw Products</a>
+                <a class="collapse-item {{ request()->is('finish-products') ? 'active' : ''}}" href="{{url('/finishproducts')}}">Finish Products</a>
+
             </div>
         </div>
     </li>

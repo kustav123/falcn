@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clients;
+use App\Http\Controllers\FinishproductController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\RawproductController;
 use App\Http\Controllers\ReloadCacheController;
@@ -59,5 +60,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit', [RawproductController::class, 'edit']);
         Route::post('disable', [RawproductController::class, 'disable']);
     });
+//// for factory only
+Route::prefix('finishproducts')->group(function () {
+    Route::get('/', [FinishproductController::class, 'index']);
+    Route::post('store', [FinishproductController::class, 'store']);
+    Route::post('edit', [FinishproductController::class, 'edit']);
+    Route::post('disable', [FinishproductController::class, 'disable']);
+});
     Route::get('/logout', [AuthController::class, 'logout']);
 });

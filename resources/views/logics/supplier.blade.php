@@ -127,8 +127,7 @@ $('#suppForm').on('submit', function (e) {
                 $('#address').val(res.address)
                 $('#remarks').val(res.remarks);
                 $("#btn-save").html('Update');
-                var oTable = $('#dataTable').dataTable();
-                oTable.fnDraw(false);
+
             },
         error: function(xhr, status, error) {
             console.error('AJAX Error:', xhr.responseText);

@@ -48,7 +48,19 @@
             </div>
         </div>
     </li>
-
+    <li class="nav-item @if($segment1 == 'raw-products') active @endif">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInventory"
+            aria-expanded="true" aria-controls="collapseInventory">
+            <i class="fas fa-fw fa-boxes"></i>
+            <span>Inventory</span>
+        </a>
+        <div id="collapseInventory" class="collapse @if($segment1 == 'raw-products') show @endif" aria-labelledby="headingInventory" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Inventory:</h6>
+                <a class="collapse-item {{ request()->is('raw-products') ? 'active' : ''}}" href="{{url('/rawproducts')}}">Raw Products</a>
+            </div>
+        </div>
+    </li>
     <li class="nav-item {{ request()->is('staffs') ? 'active' : ''}}">
         <a class="nav-link" href="{{url('/staffs')}}">
             <i class="fas fa-fw fa-chart-area"></i>

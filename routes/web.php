@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clients;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\RawproductController;
 use App\Http\Controllers\ReloadCacheController;
 use App\Http\Controllers\Staffs;
 use App\Http\Controllers\SupplierController;
@@ -38,7 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('disable', [Clients::class,'disable']);
     });
 
-    Route::prefix('suppliers')->group(function () {
+    Route::prefix('suppliers')->group(function () {    //for factory only
         Route::get('/', [SupplierController::class, 'index']);
         Route::post('store', [SupplierController::class, 'store']);
         Route::post('edit', [SupplierController::class, 'edit']);
@@ -51,6 +52,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit', [ItemsController::class, 'edit']);
         Route::post('disable', [ItemsController::class, 'disable']);
     });
-
+//// for factory only
+    Route::prefix('rawproducts')->group(function () {
+        Route::get('/', [RawproductController::class, 'index']);
+        Route::post('store', [RawproductController::class, 'store']);
+        Route::post('edit', [RawproductController::class, 'edit']);
+        Route::post('disable', [RawproductController::class, 'disable']);
+    });
     Route::get('/logout', [AuthController::class, 'logout']);
 });

@@ -59,7 +59,7 @@
 
     const add = () => {
     $('#suppForm').trigger("reset");
-    $('#SuppModal').html("Add Client");
+    $('#SuppModal').html("Add Supplier");
     $('#addSuppModal').modal('show');
 
     $('#id').val('');

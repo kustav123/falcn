@@ -167,38 +167,5 @@ $('#staffForm').on('submit', function (e) {
             }
         }
 
-    // $('#staffForm').submit(function(e) {
-    //     e.preventDefault();
 
-    //     let btnSaveText = $('#btn-save').html();
-    //     $('#btn-save').html(`
-    //         <div class="spinner-border spinner-border-sm" role="status">
-    //             <span class="sr-only">Loading...</span>
-    //         </div>`)
-
-    //     var formData = new FormData(this);
-
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: "{{ url('clients/store') }}",
-    //         data: formData,
-    //         cache: false,
-    //         contentType: false,
-    //         processData: false,
-    //         dataType: 'json',
-    //         success: (data) => {
-    //             $.notify(data.message, "success");
-    //             $('#btn-save').html(btnSaveText)
-
-    //             $("#addStaffModal").modal('hide');
-    //             var oTable = $('#dataTable').dataTable();
-    //             oTable.fnDraw(false);
-    //             $("#btn-save").html('Add Client');
-    //             $("#btn-save").attr("disabled", false);
-    //         },
-    //         error: function(data) {
-    //             $.notify(data, "error");
-    //         }
-    //     });
-    // });
 </script>

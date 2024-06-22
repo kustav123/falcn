@@ -47,7 +47,7 @@
 
     const add = () => {
     $('#rawForm').trigger("reset");
-    $('#RawModal').html("Raw Product");
+    $('#RawModal').html("Add Raw Product");
     $('#addRawModal').modal('show');
 
     $('#id').val('');
@@ -104,7 +104,7 @@ $('#rawForm').on('submit', function (e) {
             dataType: 'json',
             success: function(res) {
                 $('.edit-' + id).html(`Edit`);
-                $('#RawModal').html("Edit Client");
+                $('#RawModal').html("Edit Raw Product");
                 $('#addRawModal').modal('show');
                 $('#id').val(res.rid);
                 $('#purpose').val('update');

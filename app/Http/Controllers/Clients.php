@@ -45,7 +45,6 @@ class Clients extends Controller
                 'email' => $request->email,
                 'mobile' => $request->mobile,
                 'address' => $request->address,
-                'due_ammount' => $request->due_ammount,
                 'gst' => $request->gst,
                 'remarks' => $request->remarks,
                 'status' => '1',
@@ -62,7 +61,6 @@ class Clients extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'address' => $request->address,
-                'due_ammount' => $request->due_ammount,
                 'gst' => $request->gst,
                 'remarks' => $request->remarks,
             ]);

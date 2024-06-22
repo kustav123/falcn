@@ -6,7 +6,7 @@ use App\Models\Items;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
 
 class ItemsController extends Controller
 {
@@ -70,6 +70,7 @@ class ItemsController extends Controller
 
     public function edit(Request $request)
     {
+
         $user  = Items::select(['id', 'name', 'accessary', 'complain', 'make', 'remarks'])->where(['id' => $request->id])->first();
 
         return response()->json($user);

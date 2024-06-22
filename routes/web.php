@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clients;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\Staffs;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,8 +29,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [Clients::class, 'index']);
         Route::post('store', [Clients::class, 'store']);
         Route::post('edit', [Clients::class, 'edit']);
-        Route::post('delete', [Clients::class, 'destroy']);
         Route::post('disable', [Clients::class,'disable']);
+    });
+
+    Route::prefix('suppliers')->group(function () {
+        Route::get('/', [SupplierController::class, 'index']);
+        Route::post('store', [SupplierController::class, 'store']);
+        Route::post('edit', [SupplierController::class, 'edit']);
+        Route::post('disable', [SupplierController::class,'disable']);
     });
 
     Route::prefix('items')->group(function () {

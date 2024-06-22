@@ -43,6 +43,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Customer:</h6>
                 <a class="collapse-item {{ request()->is('clients') ? 'active' : ''}}" href="{{url('/clients')}}">Clients</a>
+                <a class="collapse-item {{ request()->is('supplier') ? 'active' : ''}}" href="{{url('/suppliers')}}">Suppliers</a>
                 <a class="collapse-item {{ request()->is('items') ? 'active' : ''}}" href="{{url('/items')}}">Items</a>
             </div>
         </div>

@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (item) {
             makeSelect.innerHTML = '';
             accessorySelect.innerHTML = '';
-            complainSelect.value = '';
+            complainSelect.innerHTML = '';
 
             const makes = item.make.split(',');
             makes.forEach(make => {

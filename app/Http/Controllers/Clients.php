@@ -122,4 +122,12 @@ class Clients extends Controller
         return Response()->json($user);
 
     }
+    public function getcl(Request $request)
+    {
+
+        $user  = Client::select(['id as clid', 'name', 'email', 'mobile', 'address','gst', 'due_ammount', 'remarks'])->where(['mobile' => $request->mobile])->first();
+
+        return response()->json($user);
+    }
+
 }

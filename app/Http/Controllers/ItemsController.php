@@ -6,6 +6,7 @@ use App\Models\Items;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class ItemsController extends Controller
@@ -72,6 +73,7 @@ class ItemsController extends Controller
     {
 
         $user  = Items::select(['id', 'name', 'accessary', 'complain', 'make', 'remarks'])->where(['id' => $request->id])->first();
+        Cache::forget('itemlist');
 
         return response()->json($user);
     }
@@ -81,7 +83,24 @@ class ItemsController extends Controller
             'status' => '0'
         ]
         );
-
+        Cache::forget('itemlist');
         return Response()->json($user);
     }
+    public function getitm(Request $request)
+    {
+        $item = Cache::rememberForever('itemlist', function () {
+        return Items::select([
+            'id as itmid', 'name', 'accessary', 'complain', 'make', 'remarks'
+            ])->get();
+        });
+        return response()->json($item);
+    }
+    public function getitmbyid(Request $request)
+    {
+
+        $item  = Items::select(['accessary', 'complain', 'make', 'remarks'])->where(['id' => $request->id])->first();
+
+        return response()->json($item);
+    }
 }
+

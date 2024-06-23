@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clients;
 use App\Http\Controllers\FinishproductController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\RawproductController;
 use App\Http\Controllers\ReloadCacheController;
 use App\Http\Controllers\Staffs;
@@ -38,21 +39,32 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('store', [Clients::class, 'store']);
         Route::post('edit', [Clients::class, 'edit']);
         Route::post('disable', [Clients::class,'disable']);
-    });
+        Route::post('getcl', [Clients::class,'getcl']);
 
+    });
+//// for factory only
     Route::prefix('suppliers')->group(function () {    //for factory only
         Route::get('/', [SupplierController::class, 'index']);
         Route::post('store', [SupplierController::class, 'store']);
         Route::post('edit', [SupplierController::class, 'edit']);
         Route::post('disable', [SupplierController::class,'disable']);
     });
-
+///For Service center
     Route::prefix('items')->group(function () {
         Route::get('/', [ItemsController::class, 'index']);
         Route::post('store', [ItemsController::class, 'store']);
         Route::post('edit', [ItemsController::class, 'edit']);
         Route::post('disable', [ItemsController::class, 'disable']);
+        Route::post('getitm', [ItemsController::class,'getitm']);
+        Route::post('getitmid', [ItemsController::class,'getitmbyid']);
+
+
     });
+    Route::prefix('addjobpage')->group(function () {
+        Route::get('/', [JobController::class, 'addnewPage']);
+
+    });
+
 //// for factory only
     Route::prefix('rawproducts')->group(function () {
         Route::get('/', [RawproductController::class, 'index']);
@@ -67,5 +79,7 @@ Route::prefix('finishproducts')->group(function () {
     Route::post('edit', [FinishproductController::class, 'edit']);
     Route::post('disable', [FinishproductController::class, 'disable']);
 });
+
+
     Route::get('/logout', [AuthController::class, 'logout']);
 });

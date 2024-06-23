@@ -58,36 +58,36 @@
     clearErrors();
 }
 
-const clearErrors = () => {
-    $('.form-group').removeClass('has-error');
-    $('.help-block').remove();
-    $("#btn-save").html('Add');
-}
+    const clearErrors = () => {
+        $('.form-group').removeClass('has-error');
+        $('.help-block').remove();
+        $("#btn-save").html('Add');
+    }
 
-$('#rawForm').on('submit', function (e) {
-    e.preventDefault();
+    $('#rawForm').on('submit', function (e) {
+        e.preventDefault();
 
-    let formData = $(this).serialize();
-    let url = '/rawproducts/store';
+        let formData = $(this).serialize();
+        let url = '/rawproducts/store';
 
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: formData,
-        success: function (data) {
-            // Handle success
-            $.notify(data.message, "success");
-            $('#addRawModal').modal('hide');
-            // Possibly reload the data or update the UI
-        },
-        error: function (xhr) {
-            if (xhr.status != 200) {
-                clearErrors()
-                $.notify(xhr.responseJSON.message);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            success: function (data) {
+                // Handle success
+                $.notify(data.message, "success");
+                $('#addRawModal').modal('hide');
+                window.location.href = '/rawproducts';
+            },
+            error: function (xhr) {
+                if (xhr.status != 200) {
+                    clearErrors()
+                    $.notify(xhr.responseJSON.message);
+                }
             }
-        }
+        });
     });
-});
     const editStaff = (id) => {
 
         $('.edit-' + id).html(`
@@ -145,6 +145,7 @@ $('#rawForm').on('submit', function (e) {
                         deleteButton.html(`Disable`);
                         var oTable = $('#dataTable').dataTable();
                         oTable.fnDraw(false);
+                        window.location.href = '/rawproducts';
                     },
                     error: function(err) {
                         $.notify("Error disableing supplier", "error");

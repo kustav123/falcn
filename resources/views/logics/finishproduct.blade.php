@@ -78,7 +78,7 @@ $('#finForm').on('submit', function (e) {
             // Handle success
             $.notify(data.message, "success");
             $('#addFinModal').modal('hide');
-            // Possibly reload the data or update the UI
+            window.location.href = '/finishproducts';
         },
         error: function (xhr) {
             if (xhr.status != 200) {

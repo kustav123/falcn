@@ -53,12 +53,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Unit</label>
+                            <label class="col-sm-2 control-label" for="unit">Unit</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="unit" name="unit"
-                                    placeholder="Enter valid unit" required="" maxlength="20"  title="Enter a valid umit type">
+                                <select class="form-control" id="unit" name="unit" required="" title="Enter a valid unit type">
+                                    <option value="" disabled selected>Select valid unit</option>
+                                    <option value="KG">KG</option>
+                                    <option value="Gram">Gram</option>
+                                    <option value="ML">ML</option>
+                                    <option value="Ltr">Ltr</option>
+                                    <option value="Bag">Bag</option>
+                                    <option value="Metric ton">Metric ton</option>
+                                </select>
                             </div>
                         </div>
+
 
 
                         <div class="form-group">

@@ -90,7 +90,7 @@ $('#suppForm').on('submit', function (e) {
             // Handle success
             $.notify(data.message, "success");
             $('#addSuppModal').modal('hide');
-            // Possibly reload the data or update the UI
+            window.location.href = '/suppliers';
         },
         error: function (xhr) {
             if (xhr.status != 200) {

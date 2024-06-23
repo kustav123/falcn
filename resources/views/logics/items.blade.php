@@ -149,6 +149,7 @@
                 oTable.fnDraw(false);
                 $("#btn-save").html('Add Item');
                 $("#btn-save").attr("disabled", false);
+                window.location.href = '/items';
             },
             error: function(data) {
                 $.notify(data, "error");

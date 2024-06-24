@@ -62,7 +62,7 @@
         });
     });
 
-    const add = () => {
+    const add = (mobileNumber) => {
     $('#staffForm').trigger("reset");
     $('#staffModal').html("Add Client");
     $('#addStaffModal').modal('show');
@@ -70,6 +70,9 @@
     $('#id').val('');
     $('#purpose').val('insert');
     $("#btn-save").html('Add');
+
+    // Update mobile number input value
+    $('#mobile').val(mobileNumber);
 
     // Clear previous errors
     clearErrors();
@@ -91,20 +94,35 @@ $('#staffForm').on('submit', function (e) {
         type: 'POST',
         url: url,
         data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         success: function (data) {
             // Handle success
+            console.log('Data successfully inserted:', data); // Log success message for debugging
             $.notify(data.message, "success");
             $('#addStaffModal').modal('hide');
-            // Possibly reload the data or update the UI
-        },
-        error: function (xhr) {
-            if (xhr.status != 200) {
-                clearErrors()
-                $.notify(xhr.responseJSON.message);
+
+            // Prompt the user
+            if (confirm('Do you want to create a job for this client?')) {
+                // Redirect to add job page with mobile number
+                let mobileNumber = $('#mobile').val(); // Assuming the mobile input has id="mobile"
+                window.location.href = `/addjobpage?mob=${mobileNumber}`;
+            } else {
+                // Reload the current page
+                window.location.href = '/clients'; // Redirect to /clients
             }
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('Error inserting data:', error); // Log error for debugging
+            clearErrors();
+            $.notify(xhr.responseJSON.message);
         }
     });
 });
+
+
     const editStaff = (id) => {
         $('.edit-' + id).html(`
             <div class="spinner-border spinner-border-sm" role="status">
@@ -166,6 +184,16 @@ $('#staffForm').on('submit', function (e) {
                 deleteButton.html(`Disable`);
             }
         }
+        if (document.URL.indexOf("#addnew") >= 0) {
+        const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
+        const mobileNumber = urlParams.get('mobile');
+
+        if (mobileNumber) {
+            // Call the add() function with mobileNumber
+            add(mobileNumber);
+        }
+    }
+
 
 
 </script>

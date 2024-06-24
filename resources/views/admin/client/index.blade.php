@@ -6,7 +6,7 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"></h1>
-        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="add()">
+        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="add()" id="addnew">
             <i class="fa fa-user-plus" aria-hidden="true"></i>   Add New Client </button>
     </div>
     <div class="card shadow mb-4">

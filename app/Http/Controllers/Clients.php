@@ -127,6 +127,9 @@ class Clients extends Controller
 
         $user  = Client::select(['id as clid', 'name', 'email', 'mobile', 'address','gst', 'due_ammount', 'remarks'])->where(['mobile' => $request->mobile])->first();
 
+        if (!$user) {
+            return response()->json(['message' => 'ClientNotFound'], 404);
+        }
         return response()->json($user);
     }
 

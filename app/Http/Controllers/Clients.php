@@ -132,5 +132,15 @@ class Clients extends Controller
         }
         return response()->json($user);
     }
+    public function getclbyname(Request $request)
+    {
 
+        $user = Client::select(['id as clid', 'name', 'email', 'mobile', 'address', 'gst', 'due_ammount', 'remarks'])
+        ->where('name', 'like', '%' . $request->name . '%')
+        ->get();
+        if (!$user) {
+            return response()->json(['message' => 'ClientNotFound'], 404);
+        }
+        return response()->json($user);
+    }
 }

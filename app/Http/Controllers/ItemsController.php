@@ -60,6 +60,7 @@ class ItemsController extends Controller
                 'make' => $request -> make,
                 'remarks' => $request -> remarks,
             ]);
+            Cache::forget('itemlist');
             $msg = "Successfully updated item";
         }
 

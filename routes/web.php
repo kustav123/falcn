@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('edit', [Clients::class, 'edit']);
         Route::post('disable', [Clients::class,'disable']);
         Route::post('getcl', [Clients::class,'getcl']);
+        Route::post('getclbyname', [Clients::class,'getclbyname']);
+
 
     });
 //// for factory only

@@ -1,4 +1,5 @@
 <script type="text/javascript">
+
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
 
@@ -58,11 +59,11 @@
                 document.getElementById('address').value = client.address;
                 document.getElementById('gst_no').value = client.gst;
                 document.getElementById('email').value = client.email;
-                document.getElementById('due_amount').value = client.due_ammount;
+                document.getElementById('due_amount').value = client.due_amount;
                 document.getElementById('remarks').value = client.remarks;
                 document.getElementById('clid').value = client.clid;
-
             } else {
+                // Clear input fields
                 document.getElementById('name').value = '';
                 document.getElementById('address').value = '';
                 document.getElementById('gst_no').value = '';
@@ -72,6 +73,93 @@
             }
         }
 
+        // Autocomplete by name
+        const nameInput = document.getElementById('name');
+    const nameSuggestions = document.getElementById('nameSuggestions');
+
+    // Event listener for input changes
+    nameInput.addEventListener('input', function() {
+        const inputValue = nameInput.value.trim();
+
+        // Clear previous suggestions
+        nameSuggestions.innerHTML = '';
+
+        if (inputValue.length >= 3) {
+            // Make AJAX request to fetch suggestions
+            nameSuggestions.innerHTML = '';
+
+            fetch('/clients/getclbyname', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ name: inputValue })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Process the data and display suggestions
+                if (data.length > 0) {
+                    data.forEach(client => {
+                        const suggestion = document.createElement('div');
+                        suggestion.classList.add('suggestion', 'list-group-item');
+                        suggestion.textContent = client.name;
+                        suggestion.addEventListener('click', function() {
+                            updateClientDetails(client);
+                            nameSuggestions.innerHTML = ''; // Clear suggestions after selection
+                        });
+                        suggestion.addEventListener('mouseover', function() {
+                            this.classList.add('active'); // Add hover effect
+                        });
+                        suggestion.addEventListener('mouseout', function() {
+                            this.classList.remove('active'); // Remove hover effect
+                        });
+                        nameSuggestions.appendChild(suggestion);
+                    });
+                } else {
+                    // Handle case where no clients found
+                    const noSuggestions = document.createElement('div');
+                    noSuggestions.classList.add('no-suggestions', 'list-group-item');
+                    noSuggestions.textContent = 'No clients found. Please check name or search by mobile number.';
+                    nameSuggestions.appendChild(noSuggestions);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching client suggestions:', error);
+                // Handle error scenario
+            });
+        }
+    });
+
+
+        // Function to update client details
+        function updateClientDetails(client) {
+            if (client) {
+                document.getElementById('mobile_number').value = client.mobile;
+                document.getElementById('name').value = client.name;
+                document.getElementById('address').value = client.address;
+                document.getElementById('gst_no').value = client.gst;
+                document.getElementById('email').value = client.email;
+                document.getElementById('due_amount').value = client.due_amount;
+                document.getElementById('remarks').value = client.remarks;
+                document.getElementById('clid').value = client.clid;
+            } else {
+                // Clear input fields
+                document.getElementById('mobile').value = '';
+                document.getElementById('address').value = '';
+                document.getElementById('gst_no').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('due_amount').value = '';
+                document.getElementById('remarks').value = '';
+            }
+        }
+
+        // Item related code
         const itemSelect = document.getElementById('item');
         const makeSelect = document.getElementById('make');
         const accessorySelect = document.getElementById('accessary');
@@ -153,4 +241,30 @@
             }
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchByMobile = document.getElementById('search_by_mobile');
+        const searchByName = document.getElementById('search_by_name');
+        const mobileNumberInput = document.getElementById('mobile_number');
+        const nameInput = document.getElementById('name');
+
+        // Initially set mobile number input to enabled and name input to readonly
+        mobileNumberInput.removeAttribute('readonly');
+        nameInput.setAttribute('readonly', 'readonly');
+
+        // Event listener for radio buttons
+        searchByMobile.addEventListener('change', function() {
+            mobileNumberInput.removeAttribute('readonly');
+            nameInput.setAttribute('readonly', 'readonly');
+            nameInput.value = ''; // Clear name input if switched
+        });
+
+        searchByName.addEventListener('change', function() {
+            nameInput.removeAttribute('readonly');
+            mobileNumberInput.setAttribute('readonly', 'readonly');
+            mobileNumberInput.value = ''; // Clear mobile number input if switched
+        });
+    });
+
+
     </script>

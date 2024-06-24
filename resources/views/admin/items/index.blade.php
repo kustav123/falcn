@@ -64,14 +64,14 @@
                             <label for="accessary" class="col-sm-2 control-label">Accessories</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="accessary" name="accessary"
-                                    placeholder="Enter Accessories list ',' separeted " required="">
+                                    placeholder="Enter Accessories in ',' separeted list" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="complain" class="col-sm-2 control-label">Complaint List</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="complain" name="complain"
-                                    placeholder="Enter Complaint list ',' separeted " required="">
+                                    placeholder="Enter Complaint in ',' separeted list " >
                             </div>
                         </div>
                         <div class="form-group">

@@ -1,6 +1,11 @@
 @extends('layouts.master')
 
 @section('content')
+ <style>
+    .p-2 {
+    padding: .1rem !important;
+}
+</style>
    @include('links.datatables')
    <div class="container">
       <form method="POST">
@@ -10,18 +15,37 @@
          <div class="row">
             <!-- Job ID and Queue Number Section - Read-only Centered -->
             <div class="col-md-6 offset-md-3 text-center">
-               <div class="row">
-                  <div class="col-md-6">
-                     <label for="job_id">Job ID</label>
-                     <input type="text" class="form-control text-center" id="job_id" name="job_id" readonly value="{{ $head }}/{{ $newJobId }}">
-                  </div>
-                  <div class="col-md-6">
-                     <label for="queue_number">Queue Number</label>
-                     <input type="text" class="form-control text-center" id="queue_number" name="queue_number" readonly value="{{ $newqueue }}">
-                  </div>
-               </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <label for="job_id">Temporary Job ID</label>
+                        <input type="text" class="form-control text-center" id="job_id" name="job_id" readonly value="{{ $head }}/{{ $newJobId }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="queue_number">Queue </label>
+                        <input type="text" class="form-control text-center" id="queue_number" name="queue_number" readonly value="{{ $newqueue }}">
+                    </div>
+                    <div class="col-md-5">
+                        <fieldset class="border p-2">
+                            <legend class="w-auto">Search by</legend>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="search_by" id="search_by_mobile" value="mobile" checked>
+                                <label class="form-check-label" for="search_by_mobile">Mobile</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="search_by" id="search_by_name" value="name">
+                                <label class="form-check-label" for="search_by_name">Name</label>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+
+                </div>
             </div>
-         </div>
+        </div>
+
 
          <div class="row mt-3">
             <div class="col-md-12 text-center">
@@ -30,6 +54,7 @@
         </div>
 
          <div class="row mt-3">
+
             <!-- Mobile Number Section - Textbox -->
             <div class="col-md-4">
                <label for="mobile_number">Mobile Number</label>
@@ -39,7 +64,9 @@
             <!-- Name, Address, GST No, Email - Read-only Side by Side -->
             <div class="col-md-4">
                <label for="name">Name</label>
-               <input type="text" class="form-control" id="name" name="name" readonly>
+               <input type="text" class="form-control" id="name" name="name"  placeholder="Enter Pertial name for search">
+               <div id="nameSuggestions"></div> <!-- Container for suggestions -->
+
             </div>
             <div class="col-md-4">
                <label for="address">Address</label>
@@ -108,12 +135,12 @@
 
          <div class="row mt-3 justify-content-center">
             <div class="col-md-4">
-               <label for="complain">Complain</label>
-               <select class="form-control" id="complain" name="complain" multiple> </select>
+               <label for="complain">Complain </label>
+               <select class="form-control" id="complain" name="complain[]"  multiple> </select>
             </div>
             <div class="col-md-4">
                 <label for="accessary">Accessory</label>
-                <select class="form-control" id="accessary" name="accessary" multiple></select>
+                <select class="form-control" id="accessary" name="accessary[]"  multiple></select>
              </div>
          </div>
 

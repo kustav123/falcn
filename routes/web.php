@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::prefix('addjobpage')->group(function () {
         Route::get('/', [JobController::class, 'addnewPage']);
+        Route::post('addjob', [JobController::class, 'addnew']);
+
 
     });
 

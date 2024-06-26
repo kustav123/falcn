@@ -99,7 +99,7 @@ class ItemsController extends Controller
     public function getitmbyid(Request $request)
     {
 
-        $item  = Items::select(['accessary', 'complain', 'make', 'remarks'])->where(['id' => $request->id])->first();
+        $item  = Items::select(['accessary', 'complain', 'make', 'remarks'])->where(['name' => $request->name])->first();
 
         return response()->json($item);
     }

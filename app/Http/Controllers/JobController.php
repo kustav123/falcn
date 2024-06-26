@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class JobController extends Controller
 {
@@ -22,26 +23,71 @@ class JobController extends Controller
         $msg = "";
         $purpose = $request->purpose;
         if ($purpose == 'insert') {
-            $request->validate([
-                'name' => 'required',
-                'unit' => 'required'
-              ]);
+            // $request->validate([
+            //     'name' => 'required',
+            //     'unit' => 'required'
+            //   ]);
+        $sequence = DB::table('secuence')
+        ->select('sno', 'head')
+        ->where('type', 'job')
+        ->lockForUpdate()
+        ->first();
 
-            Jobs::create([
 
-
+        // Calculate new job ID
+        $head =  $sequence->head ;
+        $newJobId = $sequence->sno + 1;
+        $newJobId = str_pad($newJobId, 5, '0', STR_PAD_LEFT);
+        $newJobId =  $head . '/' . $newJobId ;
+        // Log::info('New Job ID: ' . $newJobId);
+        Log::info( $request->complain);
+        Jobs::create([
+            'id' => $newJobId,
+            'clid' => $request->clid,
+            'status'=> "Open",
+            'echarge'=> $request->rest
             ]);
+            $accessary = implode(', ', $request->accessary);
+            $complain = implode(', ', $request->complain);
+
+
             Jobsitem::create([
-
-
+                'jobid' => $newJobId,
+                'item'  => $request->item,
+                'make'  => $request->make,
+                'model'=> $request->model,
+                'snno' => $request-> snno,
+                'property' => $request -> property,
+                'accessary' => $accessary,
+                'complain' => $complain,
+                // 'remarks' => $request -> property
             ]);
 
 
-
+                  DB::table('secuence')
+                 ->where('type', 'job')
+                 ->increment('sno');
 
             // DB::table('secuence')->where('type', 'job')->update(['id' => $newJobId]);
 
-            $msg = "Successfully Product created";
+            $msg = "Successfully Job created";
+            return response()->json([
+                // 'message' => $msg,
+                'Jobid' => $newJobId,
+                'Name' => $request->name,
+                'Address' => $request->address,
+                'GST No' => $request->gst_no,
+                'Email' => $request->email,
+                'Make' => $request->make,
+                'Model' => $request->model,
+                'Serial No.' => $request->snno,
+                'Property' => $request->property,
+                'Complain' => $complain,
+                'Accessary' => $accessary,
+                'Estimation' => $request->rest,
+
+            ]);
+
 
         } else if ($purpose == 'update') {
             $request->validate([
@@ -78,10 +124,7 @@ class JobController extends Controller
         $newJobId = $sequence->sno + 1;
         $newJobId = str_pad($newJobId, 5, '0', STR_PAD_LEFT);
 
-        // // Update the sequence in the database
-        // DB::table('secuence')
-        // ->where('type', 'job')
-        // ->update(['id' => $newJobId]);
+
         $queue = DB::table('job')
         ->where('status', 'unasgn')
         ->count();

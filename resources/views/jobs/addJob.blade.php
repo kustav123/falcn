@@ -8,9 +8,12 @@
 </style>
    @include('links.datatables')
    <div class="container">
-      <form method="POST">
+      <form class="form-horizontal" id="jobForm">
          @csrf
          <input type="hidden" id="clid" name="clid">
+         <input type="hidden" name="purpose" id="purpose" value="insert">
+         <input type="hidden" name="itid" id="itid">
+
 
          <div class="row">
             <!-- Job ID and Queue Number Section - Read-only Centered -->
@@ -30,7 +33,7 @@
 
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="search_by" id="search_by_mobile" value="mobile" checked>
-                                <label class="form-check-label" for="search_by_mobile">Mobile</label>
+                                 <label class="form-check-label" for="search_by_mobile">Mobile</label>
                             </div>
 
                             <div class="form-check form-check-inline">
@@ -151,6 +154,36 @@
          </div>
       </form>
    </div>
+<!-- Modal -->
+<div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="jobDetailsModalLabel">Job Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobDetailsTableBody">
+                            <!-- Table body will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printJobDetails()">Print</button>
+            </div>
+        </div>
+    </div>
+</div>
 
    @include('logics/addjob')
 @endsection

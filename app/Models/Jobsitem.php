@@ -23,7 +23,6 @@ class Jobsitem extends Model
         'proprty',
         'accessary',
         'complain',
-        'rest',
         'remarks'
     ];
 }

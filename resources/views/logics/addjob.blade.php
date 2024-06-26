@@ -189,7 +189,7 @@
             itemSelect.innerHTML = '<option value="">Select Item</option>';
             items.forEach(item => {
                 const option = document.createElement('option');
-                option.value = item.itmid;
+                option.value = item.name;
                 option.text = item.name;
                 itemSelect.appendChild(option);
             });
@@ -202,7 +202,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ id: itemId })
+                body: JSON.stringify({ name: itemId })
             })
             .then(response => response.json())
             .then(data => updateItemDetails(data))
@@ -266,5 +266,58 @@
         });
     });
 
+    $('#jobForm').submit(function(e) {
+        e.preventDefault();
+
+
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('addjobpage/addjob') }}",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: (data) => {
+                // $.notify(data.message, "success");
+                 showJobDetailsModal(data)
+            },
+            error: function(data) {
+                $.notify(data, "error");
+            }
+        });
+    });
+
+    function showJobDetailsModal(jobDetails) {
+        $('#jobDetailsTableBody').empty();
+
+        for (const [key, value] of Object.entries(jobDetails)) {
+            $('#jobDetailsTableBody').append(`
+                <tr>
+                    <td>${key}</td>
+                    <td>${value}</td>
+                </tr>
+            `);
+        }
+
+        $('#jobDetailsModal').modal('show');
+    }
+    function printJobDetails() {
+    var $clone = $('#jobDetailsModal').clone();
+    $clone.find('.modal-footer').remove();
+
+    var printWindow = window.open('', '_blank');
+    printWindow.document.body.innerHTML = $clone.html();
+
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+}
+    function closeModal() {
+        $('#jobDetailsModal').modal('hide');
+    }
 
     </script>

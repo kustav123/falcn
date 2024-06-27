@@ -2,19 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jobcomments;
 use App\Models\Jobs;
 use App\Models\Jobsitem;
 use Illuminate\Http\Request;
-use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class JobController extends Controller
 {
     public function index(Request $request)
     {
+        // Log::info('in controler');
 
+        if ($request->ajax()) {
+            // Log::info('Received an AJAX request.');
+
+             // ->where('status', '>', '1'); //Grater Than
+            // ->where('status', '1'); //Equal to
+            $data = DB::table('job')
+            ->join('client', 'job.clid', '=', 'client.id')
+            ->join('job_item', 'job.id', '=', 'job_item.jobid')
+            ->leftJoin('appuser', function ($join) {
+                $join->on('job.assigned', '=', 'appuser.id')
+                    ->whereNotNull('job.assigned'); // Conditionally join only when assigned is not null
+            })
+            ->select('job.id as Job', 'client.name', 'job.status', 'job.echarge', DB::raw('IFNULL(appuser.name, "") as uname'), 'job_item.item')
+            ->get();
+
+            // Log::info('Fetched data: ', ['data' => $data]);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return view('jobs.action', compact('row'));
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('jobs.jobmanage');
 
     }
 
@@ -40,15 +67,19 @@ class JobController extends Controller
         $newJobId = str_pad($newJobId, 5, '0', STR_PAD_LEFT);
         $newJobId =  $head . '/' . $newJobId ;
         // Log::info('New Job ID: ' . $newJobId);
-        Log::info( $request->complain);
+        // Log::info( $request->complain);
+        $accessary = implode(', ', $request->accessary);
+        $complain = implode(', ', $request->complain);
+    DB::transaction(function () use ($request, $newJobId,$accessary, $complain) {
+
         Jobs::create([
             'id' => $newJobId,
             'clid' => $request->clid,
             'status'=> "Open",
-            'echarge'=> $request->rest
+            'echarge'=> $request->rest,
+            'remarks' => $request->job_remarks
             ]);
-            $accessary = implode(', ', $request->accessary);
-            $complain = implode(', ', $request->complain);
+
 
 
             Jobsitem::create([
@@ -62,13 +93,17 @@ class JobController extends Controller
                 'complain' => $complain,
                 // 'remarks' => $request -> property
             ]);
+            Jobcomments::create([
+                'jbid' => $newJobId,
+                'usid' => Auth::user()->id,
+                'type' => 'App',
+                'message' => 'Job Created',
 
-
-                  DB::table('secuence')
+            ]) ;
+             DB::table('secuence')
                  ->where('type', 'job')
                  ->increment('sno');
-
-            // DB::table('secuence')->where('type', 'job')->update(['id' => $newJobId]);
+                });
 
             $msg = "Successfully Job created";
             return response()->json([
@@ -84,23 +119,12 @@ class JobController extends Controller
                 'Property' => $request->property,
                 'Complain' => $complain,
                 'Accessary' => $accessary,
+                'Job Remarks' => $request ->job_remarks,
                 'Estimation' => $request->rest,
 
             ]);
 
 
-        } else if ($purpose == 'update') {
-            $request->validate([
-                'id' => 'required',
-                // 'email' => 'required|string|email',
-
-            ]);
-          //   Log::info('User data fetched:', ['user' => $request->id]);
-
-            Jobs::where('id', $request->id)->update([
-
-            ]);
-            $msg = "Successfully  products updated";
         }
 
         return response()->json([
@@ -126,7 +150,7 @@ class JobController extends Controller
 
 
         $queue = DB::table('job')
-        ->where('status', 'unasgn')
+        ->where('status', 'Open')
         ->count();
         $newqueue = $queue + 1;
 
@@ -140,5 +164,81 @@ class JobController extends Controller
         'newqueue' => $newqueue
     ]);
     }
+    public function GetJobDetails(Request $request)
+    {
+
+        Log::info('Incoming request', ['job_id' => $request->jobid]);
+
+        $jobdtl = DB::table('job_comment')
+        ->join('appuser', 'job_comment.usid', '=', 'appuser.id')
+        ->select(DB::raw("jbid,DATE_FORMAT(job_comment.created_at, '%Y-%m-%d %H:%i') as created_at"), 'appuser.name', 'job_comment.type', 'job_comment.message')
+        ->where('jbid', $request->jobid)
+        ->orderBy('created_at','asc')
+        ->get();
+
+        Log::info('Incoming request', ['job_id' => $request->jobid]);
+
+        Log::info('jobdtl', ['jobdtl' => $jobdtl]);
+        return response()->json($jobdtl);
+    }
+
+    public function UpdateComment(Request $request)
+    {
+
+        Jobcomments::create([
+            'jbid' => $request -> jobid,
+            'usid' => Auth::user()->id,
+            'type' => 'User',
+            'message' => $request-> comment
+
+        ]) ;
+
+    }
+
+    public function UpdateJob(Request $request)
+    {
+
+
+         $request->validate([
+            'jobid' => 'required',
+
+            ]);
+
+            if ($request->status === 'Assign' && $request->assigned_to) {
+                // Update Jobs table
+
+                DB::transaction(function () use ($request) {
+                    Jobs::where('id', $request->jobid)->update([
+                        'assigned' => $request->assigned_to,
+                        'status' => 'Assigned'
+                    ]);
+
+                    // Create Jobcomments record
+                    Jobcomments::create([
+                        'jbid' => $request->jobid,
+                        'usid' => Auth::user()->id,
+                        'type' => 'User',
+                        'message' => 'Job Assigned to ' . $request->assigned_to,
+                    ]);
+                });
+                } else {
+                    // Handle invalid or incomplete request
+                    DB::transaction(function () use ($request) {
+                        Jobs::where('id', $request->jobid)->update([
+                            'status' => $request->status
+                        ]);
+
+                        // Create Jobcomments record
+                        Jobcomments::create([
+                            'jbid' => $request->jobid,
+                            'usid' => Auth::user()->id,
+                            'type' => 'User',
+                            'message' => 'Changed Status to ' . $request->status,
+                        ]);
+                    });
+                                    }
+
+    }
+
 
 }

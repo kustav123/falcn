@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('store', [Staffs::class, 'store']);
         Route::post('edit', [Staffs::class, 'edit']);
         Route::post('delete', [Staffs::class, 'destroy']);
+        Route::post('getlist', [Staffs::class, 'liststuff']);
+
     });
 
     Route::prefix('clients')->group(function () {
@@ -65,7 +67,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('addjobpage')->group(function () {
         Route::get('/', [JobController::class, 'addnewPage']);
         Route::post('addjob', [JobController::class, 'addnew']);
-
+    });
+    Route::prefix('listjob')->group(function () {
+        Route::get('/', [JobController::class, 'index']);
+        Route::get('jbdtl', [JobController::class,'GetJobDetails']);
+        Route::post('addcmnt', [JobController::class,'UpdateComment']);
+        Route::post('update', [JobController::class,'UpdateJob']);
 
     });
 

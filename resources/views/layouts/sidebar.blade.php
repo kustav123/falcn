@@ -77,6 +77,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Job Management:</h6>
                 <a class="collapse-item {{ request()->is('addjobpage') ? 'active' : '' }}" href="{{ url('/addjobpage') }}">Add Job</a>
+                <a class="collapse-item {{ request()->is('managejobpage') ? 'active' : '' }}" href="{{ url('/listjob') }}">Manage Job</a>
+
             </div>
         </div>
     </li>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\DataTables as DataTables;
 
 class Staffs extends Controller
@@ -43,7 +44,7 @@ class Staffs extends Controller
                 'role' => $this->ROLE_STAFF,
                 'password' => bcrypt($request->password),
             ]);
-
+        cache()->forget('userlist');
             $msg = "Successfully staff created";
         } else if ($purpose == 'update') {
             $request->validate([
@@ -56,6 +57,8 @@ class Staffs extends Controller
                     'email' => $request->email,
                     'password' => bcrypt($request->password)
                 ]);
+                cache()->forget('userlist');
+
             } else {
                 User::where('id', $request->id)->update([
                     'name' => $request->name,
@@ -76,12 +79,28 @@ class Staffs extends Controller
         $user  = User::select(['id', 'name', 'email'])->where(['id' => $request->id, 'role' => $this->ROLE_STAFF])->first();
 
         return response()->json($user);
+
+
     }
 
     public function destroy(Request $request)
     {
         $user = User::where('id', $request->id)->delete();
+        cache()->forget('userlist');
 
         return Response()->json($user);
+    }
+
+    public function liststuff(Request $request)
+    {
+        $user =  Cache::rememberForever('userlist', function () {
+            return User::select([
+                'id', 'name'
+                ])
+                ->where('status',1)
+                ->get();
+            });
+            return response()->json($user);
+
     }
 }

@@ -145,6 +145,10 @@
                 <label for="accessary">Accessory</label>
                 <select class="form-control" id="accessary" name="accessary[]"  multiple></select>
              </div>
+             <div class="col-md-4">
+                <label for="job_remarks">Job Remarks</label>
+                <input type="text" class="form-control" id="job_remarks" name="job_remarks">
+            </div>
          </div>
 
          <div class="row mt-3">

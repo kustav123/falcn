@@ -318,6 +318,7 @@
 }
     function closeModal() {
         $('#jobDetailsModal').modal('hide');
+        window.location.href = '/listjob';
     }
 
     </script>

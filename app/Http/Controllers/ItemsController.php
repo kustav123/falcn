@@ -92,13 +92,12 @@ class ItemsController extends Controller
         $item = Cache::rememberForever('itemlist', function () {
         return Items::select([
             'id as itmid', 'name', 'accessary', 'complain', 'make', 'remarks'
-            ])->get();
+            ])->where('status',1)->get();
         });
         return response()->json($item);
     }
     public function getitmbyid(Request $request)
     {
-
         $item  = Items::select(['accessary', 'complain', 'make', 'remarks'])->where(['name' => $request->name])->first();
 
         return response()->json($item);
